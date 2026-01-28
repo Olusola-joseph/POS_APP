@@ -1,0 +1,76 @@
+POS OPERATOR REGISTRATION USER FLOW DIAGRAM
+
+ENTRY POINT: Field Agent opens the mobile app and starts a new registration
+
+STEP 1: AUTHENTICATION & ASSIGNMENT VERIFICATION
+├── Field Agent enters phone number
+├── OTP verification
+├── System assigns Ward/Town for the day
+└── Navigation to "Start New Registration"
+
+STEP 2: GPS LOCATION CAPTURE
+├── App checks if GPS is enabled
+├── If GPS disabled → Show error message → User enables GPS → Return to this step
+├── Auto-capture current lat/long coordinates
+├── Perform reverse geocoding to auto-fill Town/Ward
+├── User can manually correct location details if needed
+├── Display map with current pin position
+└── "Continue" button enabled only when GPS coordinates captured
+
+STEP 3: BIOMETRICS & IDENTITY VERIFICATION
+├── Prompt user to take selfie photo
+├── Prompt user to take business signage photo
+├── OCR scan for NIN/BVN/Voters ID (or manual entry)
+├── Backend check for duplicates (BVN/Phone number already exists)
+├── If duplicate found → Show alert "This operator may already be registered"
+│   ├── Option to "View existing record" OR "Continue with registration"
+│   └── If "Continue", add note about potential duplicate
+└── If no duplicates → Continue to next step
+
+STEP 4: BUSINESS DETAILS COLLECTION
+├── Input shop name (text field with auto-complete suggestions)
+├── Input exact location/landmark (text field)
+├── Select operating space size (dropdown: Single Table, Kiosk, Shop, Store)
+├── Select number of POS terminals (dropdown: 1, 2, 3+)
+├── Multi-select banks serviced (checkboxes: GTB, Access, Opay, Palmpay, etc.)
+└── "Continue" button enabled when all fields filled
+
+STEP 5: CONTACT INFORMATION & TIERING
+├── Input operator name (text field)
+├── Input phone number (with validation)
+├── Input WhatsApp number (optional)
+├── Auto-assign tier based on location/volume indicators
+│   ├── Tier 1: High volume areas (urban centers)
+│   ├── Tier 2: Medium volume areas (suburbs)
+│   └── Tier 3: Rural/low volume areas
+├── Manual tier adjustment allowed by field agent
+└── "Continue" button enabled when required fields filled
+
+STEP 6: DIGITAL SIGNATURE PROCESS
+├── Display summary of all entered information
+├── Request operator signature (touch screen signature capture)
+├── Request field agent signature (touch screen signature capture)
+├── Generate temporary verification slip (PDF)
+├── Option to "Print slip" or "Email slip" to operator
+├── Option to "Send SMS with verification code" to operator
+└── "Submit Registration" button
+
+STEP 7: SUBMISSION & CONFIRMATION
+├── Save registration to local offline storage
+├── Queue for sync when internet connection available
+├── Generate digital POS ID card with QR code
+├── Show success message with reference number
+├── Add operator to map view (if in same ward/town)
+└── Return to "Dashboard" or "New Registration" option
+
+ERROR HANDLING PATHS:
+├── No GPS signal → Wait and retry mechanism
+├── No internet → Continue with offline mode
+├── Duplicate detection → Alert and decision tree
+├── Failed photo upload → Retry mechanism
+└── Sync failure → Queue for later sync
+
+POST-REGISTRATION FLOWS:
+├── For operator: Receive SMS with digital ID card link
+├── For operator: Access to referral program
+└── For field agent: Performance metrics update
